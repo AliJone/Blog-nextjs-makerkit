@@ -111,5 +111,23 @@
   "languageDescription": "Choose your preferred language",
   "noTeamsYet": "You don't have any teams yet.",
   "createTeam": "Create a team to get started.",
-  "createTeamButtonLabel": "Create a Team"
+  "createTeamButtonLabel": "Create a Team",
+  
+  "profileSettings": "Profile Settings",
+  "profileSettingsDescription": "Manage your public profile information",
+  "profileBio": "Bio",
+  "profileBioDescription": "Tell people about yourself",
+  "profileLocation": "Location",
+  "profileLocationDescription": "Where you're based",
+  "profileJobTitle": "Job Title",
+  "profileJobTitleDescription": "Your current position",
+  "profileWebsite": "Website",
+  "profileWebsiteDescription": "Your personal or company website",
+  "profileSocialLinks": "Social Links",
+  "profileSocialLinksDescription": "Add links to your social media profiles",
+  "profileTwitter": "Twitter",
+  "profileGithub": "GitHub",
+  "profileLinkedin": "LinkedIn",
+  "saveChanges": "Save Changes",
+  "profileUpdatedSuccessfully": "Your profile has been updated successfully"
 }

@@ -1,0 +1,23 @@
+{
+  "title": "Blog",
+  "createPost": "Create Post",
+  "editPost": "Edit Post",
+  "noPosts": "No posts found",
+  "createFirstPost": "Create your first post",
+  "backToAllPosts": "Back to all posts",
+  "readMore": "Read more",
+  "postTitle": "Title",
+  "postContent": "Content",
+  "publishImmediately": "Publish post immediately",
+  "cancel": "Cancel",
+  "create": "Create Post",
+  "update": "Update Post",
+  "creating": "Creating...",
+  "updating": "Updating...",
+  "deleteConfirmation": "Are you sure you want to delete this post?",
+  "deletingPost": "Deleting...",
+  "delete": "Delete",
+  "edit": "Edit",
+  "preview": "Preview",
+  "backToEditing": "Back to Editing"
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "@kit/tsconfig/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "eslint.config.mjs", "tsconfig.json"],
+  "exclude": ["dist", "build", "node_modules"]
+}

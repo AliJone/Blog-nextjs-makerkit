@@ -100,6 +100,13 @@ function isServerAction(request: NextRequest) {
 function getPatterns() {
   return [
     {
+      // Redirect root to blog page
+      pattern: new URLPattern({ pathname: '/' }),
+      handler: async (req: NextRequest, res: NextResponse) => {
+        return NextResponse.redirect(new URL('/blog', req.nextUrl.origin).href);
+      },
+    },
+    {
       pattern: new URLPattern({ pathname: '/auth/*?' }),
       handler: async (req: NextRequest, res: NextResponse) => {
         const {
@@ -115,7 +122,7 @@ function getPatterns() {
         const isVerifyMfa = req.nextUrl.pathname === pathsConfig.auth.verifyMfa;
 
         // If user is logged in and does not need to verify MFA,
-        // redirect to home page.
+        // redirect to blog page.
         if (!isVerifyMfa) {
           return NextResponse.redirect(
             new URL(pathsConfig.app.home, req.nextUrl.origin).href,
@@ -125,6 +132,37 @@ function getPatterns() {
     },
     {
       pattern: new URLPattern({ pathname: '/home/*?' }),
+      handler: async (req: NextRequest, res: NextResponse) => {
+        const {
+          data: { user },
+        } = await getUser(req, res);
+
+        const origin = req.nextUrl.origin;
+        const next = req.nextUrl.pathname;
+
+        // If user is not logged in, redirect to sign in page.
+        if (!user) {
+          const signIn = pathsConfig.auth.signIn;
+          const redirectPath = `${signIn}?next=${next}`;
+
+          return NextResponse.redirect(new URL(redirectPath, origin).href);
+        }
+
+        const supabase = createMiddlewareClient(req, res);
+
+        const requiresMultiFactorAuthentication =
+          await checkRequiresMultiFactorAuthentication(supabase);
+
+        // If user requires multi-factor authentication, redirect to MFA page.
+        if (requiresMultiFactorAuthentication) {
+          return NextResponse.redirect(
+            new URL(pathsConfig.auth.verifyMfa, origin).href,
+          );
+        }
+      },
+    },
+    {
+      pattern: new URLPattern({ pathname: '/blog/*?' }),
       handler: async (req: NextRequest, res: NextResponse) => {
         const {
           data: { user },

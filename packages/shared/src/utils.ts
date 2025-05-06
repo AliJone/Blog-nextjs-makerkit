@@ -19,3 +19,15 @@ export function formatCurrency(params: {
     currency: params.currencyCode,
   }).format(Number(params.value));
 }
+
+/**
+ * @name formatDate
+ * @description Format a date string with the provided options
+ */
+export function formatDate(
+  dateString: string,
+  options: Intl.DateTimeFormatOptions = { dateStyle: 'medium' }
+) {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-US', options).format(date);
+}

@@ -1,343 +1,638 @@
-![Makerkit - Next.js Supabase SaaS Starter Kit \[Lite version\]](apps/web/public/images/makerkit.webp)
+# Next.js Blog with Supabase and Apollo Client
 
-# NEW! Next.js Supabase SaaS Starter Kit (Lite)
+This project is a fully-featured blog application built with Next.js, Supabase, and Apollo Client. It leverages the power of a modern monorepo structure, Incremental Static Regeneration (ISR), and GraphQL to create a performant and maintainable blog platform.
 
-Start building your SaaS faster with our Next.js 15 + Supabase starter kit.
+## Table of Contents
 
-👉 **Looking for a full-featured SaaS Starter Kit?** [Check out the complete version](https://makerkit.dev)
+- [Setup Instructions](#setup-instructions)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Configuration](#environment-configuration)
+- [Running Locally](#running-locally)
+- [Supabase Integration](#supabase-integration)
+  - [Linking to a Supabase Project](#linking-to-a-supabase-project)
+  - [Database Migrations](#database-migrations)
+- [Authentication](#authentication)
+  - [Supabase + Apollo Client Integration](#supabase--apollo-client-integration)
+  - [Email OTP Login](#email-otp-login)
+- [Technical Implementations](#technical-implementations)
+  - [ISR Implementation with getStaticProps](#isr-implementation-with-getstaticprops)
+  - [Form Validation with Zod and React Hook Form](#form-validation-with-zod-and-react-hook-form)
+  - [Optimistic UI Updates](#optimistic-ui-updates)
+  - [Profile Page Implementation](#profile-page-implementation)
 
-⭐️ **Why Developers Trust Makerkit:**
-- Production-grade architecture decisions
-- Comprehensive TypeScript setup
-- Modern stack: Next.js 15, Supabase, TailwindCSS v4
-- Quality Code tooling: ESLint v9, Prettier, strict TypeScript, etc.
-- Regular updates and active maintenance
-
-PS: the documentation for this kit is still being updated, so please check back later for more details.
-
-## What's Included
-
-### Core Architecture
-- 🏗️ Next.js 15 + Turborepo monorepo setup
-- 🎨 Shadcn UI components with TailwindCSS v4
-- 🔐 Supabase authentication & basic DB
-- 🌐 i18n translations (client + server)
-- ✨ Full TypeScript + ESLint v9 + Prettier configuration
-
-### Key Features
-- 👤 User authentication flow
-- ⚙️ User profile & settings
-- 📱 Responsive marketing pages
-- 🔒 Protected routes
-- 🎯 Basic test setup with Playwright
-
-### Technologies
-
-This starter kit provides core foundations:
-
-🛠️ **Technology Stack**:
-- [Next.js 15](https://nextjs.org/): A React-based framework for server-side rendering and static site generation.
-- [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
-- [Supabase](https://supabase.com/): A realtime database for web and mobile applications.
-- [i18next](https://www.i18next.com/): A popular internationalization framework for JavaScript.
-- [Turborepo](https://turborepo.org/): A monorepo tool for managing multiple packages and applications.
-- [Shadcn UI](https://shadcn.com/): A collection of components built using Tailwind CSS.
-- [Zod](https://github.com/colinhacks/zod): A TypeScript-first schema validation library.
-- [React Query](https://tanstack.com/query/v4): A powerful data fetching and caching library for React.
-- [Prettier](https://prettier.io/): An opinionated code formatter for JavaScript, TypeScript, and CSS.
-- [Eslint](https://eslint.org/): A powerful linting tool for JavaScript and TypeScript.
-- [Playwright](https://playwright.dev/): A framework for end-to-end testing of web applications.
-
-This kit is a trimmed down version of the [full version of this SaaS Starter Kit](https://makerkit.dev). It is a good way to evaluate small part of the full kit, or to simply use it as a base for your own project.
-
-## Comparing Lite vs Full Version
-
-The lite kit is perfect for:
-- Evaluating our code architecture and patterns
-- Building basic SaaS prototypes
-- Learning our tech stack approach
-- Building a basic SaaS tool
-
-The [full version](https://makerkit.dev) adds production features:
-- 💳 Complete billing and subscription system
-- 👥 Team accounts and management
-- 📧 Mailers and Email Templates (Nodemailer, Resend, etc.)
-- 📊 Analytics (GA, Posthog, Umami, etc.)
-- 🔦 Monitoring providers (Sentry, Baselime, etc.)
-- 🔐 Production database schema
-- ✅ Comprehensive test suite
-- 🔔 Realtime Notifications
-- 📝 Blogging system
-- 💡 Documentation system
-- ‍💻 Super Admin panel
-- 🕒 Daily updates and improvements
-- 🐛 Priority bug fixes
-- 🤝 Support
-- ⭐️ Used by 1000+ developers
-- 💪 Active community members
-- 🏢 Powers startups to enterprises
-
-[View complete feature comparison →](https://makerkit.dev/#pricing)
-
-## Getting Started
+## Setup Instructions
 
 ### Prerequisites
 
-- Node.js 18.x or later (preferably the latest LTS version)
-- Docker
-- PNPM
-
-Please make sure you have a Docker daemon running on your machine. This is required for the Supabase CLI to work.
+- Node.js (v18 or later)
+- pnpm (v8 or later)
+- Git
+- Supabase account
 
 ### Installation
 
-#### 1. Clone this repository
+1. Clone the repository:
 
 ```bash
-git clone https://github.com/makerkit/next-supabase-saas-kit-lite.git
+git clone <repository-url>
+cd nextjs-blog-makerkit
 ```
 
-#### 2. Install dependencies
+2. Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-#### 3. Start Supabase
+### Environment Configuration
 
-Please make sure you have a Docker daemon running on your machine.
-
-Then run the following command to start Supabase:
+1. Copy the environment example files:
 
 ```bash
-pnpm run supabase:web:start
+cp apps/web/.env.example apps/web/.env.local
 ```
 
-Once the Supabase server is running, please access the Supabase Dashboard using the port in the output of the previous command. Normally, you find it at [http://localhost:54323](http://localhost:54323).
+2. Update the environment variables in `.env.local` with your Supabase credentials:
 
-You will also find all the Supabase services printed in the terminal after the command is executed.
+```
+NEXT_PUBLIC_SUPABASE_URL=<your-supabase-url>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+SUPABASE_SERVICE_ROLE_KEY=<your-supabase-service-role-key>
+```
 
-##### Stopping Supabase
+## Running Locally
 
-To stop the Supabase server, run the following command:
+1. Start the Supabase local development environment:
 
 ```bash
-pnpm run supabase:web:stop
+cd apps/web
+pnpm supabase:start
 ```
 
-##### Resetting Supabase
-
-To reset the Supabase server, run the following command:
+2. Run the development server:
 
 ```bash
-pnpm run supabase:web:reset
+pnpm dev
 ```
 
-##### More Supabase Commands
+3. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-For more Supabase commands, see the [Supabase CLI documentation](https://supabase.com/docs/guides/cli).
+## Supabase Integration
 
-```
-# Create new migration
-pnpm --filter web supabase migration new <name>
+### Linking to a Supabase Project
 
-# Link to Supabase project
-pnpm --filter web supabase db link
+To link your local development environment to a Supabase project:
 
-# Push migrations
-pnpm --filter web supabase db push
-```
-
-#### 4. Start the Next.js application
+1. Create a new project in the [Supabase Dashboard](https://app.supabase.io/)
+2. Retrieve your project credentials from the project settings
+3. Set the `SUPABASE_PROJECT_REF` environment variable
+4. Run the following command:
 
 ```bash
-pnpm run dev
+pnpm supabase:deploy
 ```
 
-The application will be available at http://localhost:3000.
+### Database Migrations
 
-#### 5. Code Health (linting, formatting, etc.)
-
-To format your code, run the following command:
+The project includes migrations for setting up the necessary database tables:
 
 ```bash
-pnpm run format:fix
+# Run migrations on the local database
+pnpm supabase:reset
+
+# Apply migrations to your remote Supabase project
+pnpm supabase:deploy
 ```
 
-To lint your code, run the following command:
+Key migrations include:
+- `20250506000001_add_profiles_table.sql` - Creates the profiles table for user information
 
-```bash
-pnpm run lint
+## Authentication
+
+### Supabase + Apollo Client Integration
+
+The blog uses Supabase for authentication and Apollo Client for data fetching. This integration ensures authenticated GraphQL requests to your Supabase database.
+
+```typescript
+// packages/features/blog/src/graphql/provider.tsx
+'use client';
+
+import { ApolloProvider } from '@apollo/client';
+import { ReactNode } from 'react';
+import { getApolloClientInstance } from './client';
+
+export function BlogApolloProvider({ children }: { children: ReactNode }) {
+  const client = getApolloClientInstance();
+  
+  return (
+    <ApolloProvider client={client}>
+      {children}
+    </ApolloProvider>
+  );
+}
 ```
 
-To validate your TypeScript code, run the following command:
+The Apollo Client is configured to include the Supabase auth token in each request:
 
-```bash
-pnpm run typecheck
+```typescript
+// Configuration in the Apollo Client setup
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // Get the auth token from Supabase
+  const token = supabaseClient.auth.getSession().then(({ data }) => data?.session?.access_token);
+  
+  // Add the auth token to the headers
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }));
+
+  return forward(operation);
+});
 ```
 
-Turborepo will cache the results of these commands, so you can run them as many times as you want without any performance impact.
+### Email OTP Login
 
-## Project Structure
+The application implements passwordless authentication using Supabase's email OTP feature:
 
-The project is organized into the following folders:
+```typescript
+// packages/supabase/src/hooks/use-sign-in-with-otp.ts
+import type { SignInWithPasswordlessCredentials } from '@supabase/supabase-js';
+import { useMutation } from '@tanstack/react-query';
+import { useSupabase } from './use-supabase';
 
-```
-apps/
-├── web/                  # Next.js application
-│   ├── app/             # App Router pages
-│   │   ├── (marketing)/ # Public marketing pages
-│   │   ├── auth/        # Authentication pages
-│   │   └── home/        # Protected app pages
-│   ├── supabase/        # Database & migrations
-│   └── config/          # App configuration
-│
-packages/
-├── ui/                  # Shared UI components
-└── features/           # Core feature packages
-    ├── auth/           # Authentication logic
-    └── ...
-```
+/**
+ * @name useSignInWithOtp
+ * @description Use Supabase to sign in a user with an OTP in a React component
+ */
+export function useSignInWithOtp() {
+  const client = useSupabase();
+  const mutationKey = ['auth', 'sign-in-with-otp'];
 
-For more information about this project structure, see the article [Next.js App Router: Project Structure](https://makerkit.dev/blog/tutorials/nextjs-app-router-project-structure).
+  const mutationFn = async (credentials: SignInWithPasswordlessCredentials) => {
+    const result = await client.auth.signInWithOtp(credentials);
 
-### Environment Variables
+    if (result.error) {
+      if (shouldIgnoreError(result.error.message)) {
+        console.warn(
+          `Ignoring error during development: ${result.error.message}`,
+        );
 
-You can configure the application by setting environment variables in the `.env.local` file.
+        return {} as never;
+      }
 
-Here are the available variables:
+      throw result.error.message;
+    }
 
-| Variable Name | Description | Default Value |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | The URL of your SaaS application | `http://localhost:3000` |
-| `NEXT_PUBLIC_PRODUCT_NAME` | The name of your SaaS product | `Makerkit` |
-| `NEXT_PUBLIC_SITE_TITLE` | The title of your SaaS product | `Makerkit - The easiest way to build and manage your SaaS` |
-| `NEXT_PUBLIC_SITE_DESCRIPTION` | The description of your SaaS product | `Makerkit is the easiest way to build and manage your SaaS. It provides you with the tools you need to build your SaaS, without the hassle of building it from scratch.` |
-| `NEXT_PUBLIC_DEFAULT_THEME_MODE` | The default theme mode of your SaaS product | `light` |
-| `NEXT_PUBLIC_THEME_COLOR` | The default theme color of your SaaS product | `#ffffff` |
-| `NEXT_PUBLIC_THEME_COLOR_DARK` | The default theme color of your SaaS product in dark mode | `#0a0a0a` |
-| `NEXT_PUBLIC_SUPABASE_URL` | The URL of your Supabase project | `http://127.0.0.1:54321` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | The anon key of your Supabase project | ''
-| `SUPABASE_SERVICE_ROLE_KEY` | The service role key of your Supabase project | ''
+    return result.data;
+  };
 
-## Architecture
-
-This starter kit uses a monorepo architecture.
-
-1. The `apps/web` directory is the Next.js application.
-2. The `packages` directory contains all the packages used by the application.
-3. The `packages/features` directory contains all the features of the application.
-4. The `packages/ui` directory contains all the UI components.
-
-For more information about the architecture, please refer to the [Makerkit blog post about Next.js Project Structure](https://makerkit.dev/blog/tutorials/nextjs-app-router-project-structure).
-
-### Marketing Pages
-
-Marketing pages are located in the `apps/web/app/(marketing)` directory. These pages are used to showcase the features of the SaaS and provide information about the product.
-
-### Authentication
-
-Authenticated is backed by Supabase. The `apps/web/app/auth` directory contains the authentication pages, however, the logic is into its own package `@kit/auth` located in `packages/features/auth`.
-
-This package can be used across multiple applications.
-
-### Gated Pages
-
-Gated pages are located in the `apps/web/app/home` directory. Here is where you can build your SaaS pages that are gated by authentication.
-
-### Database
-
-The Supabase database is located in the `apps/web/supabase` directory. In this directory you will find the database schema, migrations, and seed data.
-
-#### Creating a new migration
-To create a new migration, run the following command:
-
-```bash
-pnpm --filter web supabase migration new --name <migration-name>
+  return useMutation({
+    mutationFn,
+    mutationKey,
+  });
+}
 ```
 
-This command will create a new migration file in the `apps/web/supabase/migrations` directory. 
+To use this hook in a component:
 
-#### Applying a migration
-
-Once you have created a migration, you can apply it to the database by running the following command:
-
-```bash
-pnpm run supabase:web:reset
+```typescript
+function SignInForm() {
+  const { mutateAsync, isPending } = useSignInWithOtp();
+  
+  const handleSubmit = async (email: string) => {
+    try {
+      await mutateAsync({ 
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+      
+      // Show success message
+    } catch (error) {
+      // Handle error
+    }
+  };
+  
+  return (
+    // Form implementation
+  );
+}
 ```
 
-This command will apply the migration to the database and update the schema. It will also reset the database using the provided seed data.
+## Technical Implementations
 
-#### Linking the Supabase database
+### ISR Implementation with getStaticProps
 
-Linking the local Supabase database to the Supabase project is done by running the following command:
+The blog uses Incremental Static Regeneration (ISR) to pre-render pages at build time and update them in the background after deployment. This is implemented through a dual rendering approach:
 
-```bash
-pnpm --filter web supabase db link
+1. **Server Components** fetch initial data for static generation
+2. **Client Components** display the static data initially and then update with fresh data
+
+#### Home Page Implementation
+
+```typescript
+// apps/web/app/blog/page.tsx - Server Component
+import { Suspense } from 'react';
+import { BlogClientPage } from './client-page';
+import { getApolloClientInstance } from '@kit/blog/graphql/client';
+import { GET_POSTS } from '@kit/blog/graphql/operations/queries';
+
+// Set ISR revalidation time
+export const revalidate = 60;
+
+// Server component to fetch initial data
+async function fetchInitialPosts() {
+  const apolloClient = getApolloClientInstance();
+  
+  try {
+    const { data } = await apolloClient.query({
+      query: GET_POSTS,
+      variables: { first: 5 },
+    });
+    
+    // Transform the data to match the expected structure
+    return data?.postsCollection?.edges.map(edge => edge.node) || [];
+  } catch (error) {
+    console.error('Error fetching initial posts:', error);
+    return [];
+  }
+}
+
+export default async function BlogPage() {
+  // This data is statically generated and revalidated every 60 seconds
+  const initialPosts = await fetchInitialPosts();
+  
+  return (
+    <Suspense fallback={<div>Loading posts...</div>}>
+      <BlogClientPage initialPosts={initialPosts} />
+    </Suspense>
+  );
+}
 ```
 
-This command will link the local Supabase database to the Supabase project.
+The client component uses the initial data and then fetches fresh data with Apollo Client:
 
-#### Pushing the migration to the Supabase project
+```typescript
+// apps/web/app/blog/client-page.tsx - Client Component
+'use client';
 
-After you have made changes to the migration, you can push the migration to the Supabase project by running the following command:
-
-```bash
-pnpm --filter web supabase db push
+function PostsList({ initialPosts }: PostsListProps) {
+  // Start with the initial statically generated posts
+  const [posts, setPosts] = useState<PostFragment[]>(initialPosts);
+  const [useClientData, setUseClientData] = useState(false);
+  
+  // Fetch fresh data with Apollo Client
+  const { 
+    posts: freshPosts, 
+    isLoading, 
+    error, 
+    hasNextPage, 
+    loadMore 
+  } = useFetchPosts({
+    fetchPolicy: 'network-only'
+  });
+  
+  // Replace initial static data with fresh data when ready
+  useEffect(() => {
+    if (freshPosts && freshPosts.length > 0 && !isLoading) {
+      setPosts(freshPosts);
+      setUseClientData(true);
+    }
+  }, [freshPosts, isLoading]);
+  
+  // Rendering logic...
+}
 ```
 
-This command will push the migration to the Supabase project. You can now apply the migration to the Supabase database.
+#### Blog Detail Page with Static Paths
 
-## Going to Production
+The blog detail page uses `generateStaticParams` to pre-render the first 10 posts:
 
-#### 1. Create a Supabase project
+```typescript
+// apps/web/app/blog/[id]/page.tsx - Server Component
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+import { PostDetailClient } from './client-page';
+import { getApolloClientInstance } from '@kit/blog/graphql/client';
+import { GET_POSTS, GET_POST_BY_ID } from '@kit/blog/graphql/operations/queries';
 
-To deploy your application to production, you will need to create a Supabase project.
+// Set ISR revalidation time
+export const revalidate = 60;
 
-#### 2. Push the migration to the Supabase project
+// Generate static paths for first 10 posts
+export async function generateStaticParams() {
+  const apolloClient = getApolloClientInstance();
+  
+  try {
+    const { data } = await apolloClient.query({
+      query: GET_POSTS,
+      variables: { first: 10 },
+    });
+    
+    return (data?.postsCollection?.edges || []).map((edge: any) => ({
+      id: edge.node.id,
+    }));
+  } catch (error) {
+    console.error('Error generating static paths:', error);
+    return [];
+  }
+}
 
-After you have made changes to the migration, you can push the migration to the Supabase project by running the following command:
+// Enable on-demand ISR for paths not generated at build time
+export const dynamicParams = true;
 
-```bash
-pnpm --filter web supabase db push
+// Fetch post data for static generation
+async function fetchPost(id: string) {
+  const apolloClient = getApolloClientInstance();
+  
+  try {
+    const { data } = await apolloClient.query({
+      query: GET_POST_BY_ID,
+      variables: { id },
+    });
+    
+    return data?.postsCollection?.edges?.[0]?.node;
+  } catch (error) {
+    console.error(`Error fetching post ${id}:`, error);
+    return null;
+  }
+}
+
+export default async function PostPage({ params }: { params: { id: string } }) {
+  // This data is statically generated and revalidated every 60 seconds
+  const initialPost = await fetchPost(params.id);
+  
+  if (!initialPost) {
+    notFound();
+  }
+  
+  return (
+    <Suspense fallback={<div>Loading post...</div>}>
+      <PostDetailClient initialPost={initialPost} postId={params.id} />
+    </Suspense>
+  );
+}
 ```
 
-This command will push the migration to the Supabase project.
+### Form Validation with Zod and React Hook Form
 
-#### 3. Set the Supabase Callback URL
+The blog uses Zod for schema validation combined with React Hook Form for handling form state and submissions:
 
-When working with a remote Supabase project, you will need to set the Supabase Callback URL.
+#### Schema Definition with Zod
 
-Please set the callback URL in the Supabase project settings to the following URL:
+```typescript
+// packages/features/blog/src/schema/post.schema.ts
+import { z } from 'zod';
 
-`<url>/auth/callback`
+// Define the validation schema with Zod
+export const PostSchema = z.object({
+  title: z.string()
+    .min(5, 'Title must be at least 5 characters long')
+    .max(100, 'Title cannot exceed 100 characters'),
+  body: z.string()
+    .min(10, 'Content must be at least 10 characters long')
+    .max(50000, 'Content is too long'),
+  published: z.boolean().optional().default(true),
+});
 
-Where `<url>` is the URL of your application.
-
-#### 4. Deploy to Vercel or any other hosting provider
-
-You can deploy your application to any hosting provider that supports Next.js.
-
-#### 5. Deploy to Cloudflare
-
-The configuration should work as is, but you need to set the runtime to `edge` in the root layout file (`apps/web/app/layout.tsx`).
-
-```tsx
-export const runtime = 'edge';
+export type PostFormValues = z.infer<typeof PostSchema>;
 ```
 
-Remember to enable Node.js compatibility in the Cloudflare dashboard.
+#### Form Implementation with React Hook Form
 
-## Contributing
+```typescript
+// packages/features/blog/src/components/post-form.tsx
+export function PostForm({
+  initialValues = { title: '', body: '', published: true },
+  onSubmit,
+  isSubmitting,
+  submitError,
+  mode,
+}: PostFormProps) {
+  const form = useForm<PostFormValues>({
+    resolver: zodResolver(PostSchema),
+    defaultValues: initialValues,
+  });
 
-Contributions for bug fixed are welcome! However, please open an issue first to discuss your ideas before making a pull request.
+  // Form submission handling
+  const handleFormSubmit = async (values: PostFormValues) => {
+    try {
+      await onSubmit(values);
+    } catch (error) {
+      console.error('Form submission error:', error);
+    }
+  };
 
-## License
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem className="mb-4">
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input 
+                  {...field} 
+                  placeholder="Your post title" 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="body"
+          render={({ field }) => (
+            <FormItem className="mb-4">
+              <FormLabel>Content</FormLabel>
+              <FormControl>
+                <Textarea 
+                  {...field} 
+                  rows={15}
+                  placeholder="Write your post content here..." 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="published"
+          render={({ field }) => (
+            <FormItem className="mb-6 flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Publish post immediately</FormLabel>
+              </div>
+            </FormItem>
+          )}
+        />
+        
+        {/* Form buttons */}
+      </form>
+    </Form>
+  );
+}
+```
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+### Optimistic UI Updates
 
-## Support
+The blog implements optimistic UI updates when creating or editing posts, providing immediate feedback to users while the server operation completes in the background:
 
-No support is provided for this kit. Feel free to open an issue if you have any questions or need help, but there is no guaranteed response time, nor guarantee a fix.
+```typescript
+// packages/features/blog/src/hooks/use-post.ts
+export function useUpdatePost(postId: string | undefined) {
+  // Use the actual GraphQL mutation with optimistic UI
+  const [updatePostMutation, { loading }] = useMutation<any>(UPDATE_POST, {
+    // Add optimistic response for immediate UI feedback
+    optimisticResponse: (vars: any) => {
+      return {
+        updatepostsCollection: {
+          __typename: "postsUpdateResponse",
+          records: [{
+            __typename: "posts",
+            id: postId,
+            title: vars.title,
+            body: vars.body,
+            published: vars.published,
+            updated_at: new Date().toISOString(),
+            // We don't change other fields in updates
+            // These will be preserved from the current cache
+          }]
+        }
+      } as any;
+    }
+  });
 
-For dedicated support, priority fixes, and advanced features, [check out our full version](https://makerkit.dev).
+  const updatePost = async (values: PostFormValues) => {
+    if (!postId) throw new Error('Post ID is required');
+
+    const { data } = await updatePostMutation({
+      variables: {
+        id: postId,
+        title: values.title,
+        body: values.body,
+        published: values.published,
+      },
+      update(cache, { data }) {
+        if (!data) return;
+        
+        // Clear the cache for posts collection to force a refresh
+        cache.modify({
+          fields: {
+            postsCollection() {
+              return undefined; // This will force a refetch when the posts page is visited
+            }
+          }
+        });
+        
+        // Update the post in cache
+        const updatedPost = data.updatepostsCollection.records[0];
+        
+        // Write the updated post to the cache
+        cache.writeFragment({
+          id: `Post:${postId}`,
+          fragment: POST_FRAGMENT,
+          data: updatedPost,
+        });
+      }
+    });
+
+    return data?.updatepostsCollection?.records?.[0];
+  };
+
+  return {
+    updatePost,
+    isLoading: loading,
+  };
+}
+```
+
+### Profile Page Implementation
+
+The blog includes a profile page that showcases user information and their posts:
+
+```typescript
+// GraphQL query for fetching profile data
+export const GET_PROFILE = gql`
+  query GetProfile($id: UUID!) {
+    profilesCollection(filter: { id: { eq: $id } }) {
+      edges {
+        node {
+          ...ProfileFields
+        }
+      }
+    }
+  }
+  ${PROFILE_FRAGMENT}
+`;
+
+// Profile mutation for updating user data
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile(
+    $id: UUID!,
+    $display_name: String,
+    $username: String,
+    $bio: String,
+    $website: String,
+    $avatar_url: String
+  ) {
+    updateprofilesCollection(
+      set: {
+        display_name: $display_name,
+        username: $username,
+        bio: $bio,
+        website: $website,
+        avatar_url: $avatar_url
+      }
+      filter: { id: { eq: $id } }
+    ) {
+      records {
+        ...ProfileFields
+      }
+    }
+  }
+  ${PROFILE_FRAGMENT}
+`;
+```
+
+The profile page uses these queries and mutations to display and update user information, combined with authentication to ensure only the authorized user can edit their profile.
+
+```typescript
+// Example usage in a profile page component
+function ProfilePage() {
+  const { user } = useUser();
+  const userId = user?.id;
+  
+  const { profile, isLoading } = useProfile(userId);
+  const { updateProfile, isLoading: isUpdating } = useUpdateProfile();
+  
+  // Profile form and display logic
+  
+  return (
+    <div>
+      <h1>Profile</h1>
+      {/* Profile information and form */}
+    </div>
+  );
+}
+```
+
+---
+
+This README provides a comprehensive overview of the Next.js blog project with Supabase and Apollo Client integration. The implementation showcases modern web development practices like Incremental Static Regeneration, form validation with Zod, optimistic UI updates, and integration with authentication services.

@@ -71,6 +71,12 @@ function getRemotePatterns() {
     });
   }
 
+  // Add ui-avatars.com for the blog avatars
+  remotePatterns.push({
+    protocol: 'https',
+    hostname: 'ui-avatars.com',
+  });
+
   return IS_PRODUCTION
     ? remotePatterns
     : [
@@ -81,6 +87,22 @@ function getRemotePatterns() {
         {
           protocol: 'http',
           hostname: 'localhost',
+        },
+        {
+          protocol: 'https',
+          hostname: 'ui-avatars.com',
+        },
+        {
+          protocol: 'https',
+          hostname: 'static-cse.canva.com',
+        },
+        {
+          protocol: 'https',
+          hostname: 'images.unsplash.com',
+        },
+        {
+          protocol: 'https',
+          hostname: 'example.com',
         },
       ];
 }
