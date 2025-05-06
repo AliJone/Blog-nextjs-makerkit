@@ -35,7 +35,7 @@ This project is a fully-featured blog application built with Next.js, Supabase, 
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/AliJone/Blog-nextjs-makerkit
 cd nextjs-blog-makerkit
 ```
 
