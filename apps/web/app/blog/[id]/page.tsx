@@ -83,7 +83,8 @@ async function fetchPost(id: string) {
 }
 
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
-  // First await the params - this fixes the "params should be awaited" error
+  
+  // without this await for the params we get an error
   const { id } = await params;
   
   // This data is statically generated and revalidated every 60 seconds

@@ -14,7 +14,6 @@ interface EditPostPageProps {
 }
 
 function EditPostContent({ params }: EditPostPageProps) {
-  // Unwrap the params using React.use
   const { id: postId } = React.use(params);
 
   const router = useRouter();

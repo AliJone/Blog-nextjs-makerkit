@@ -26,7 +26,8 @@ function CreatePostContent() {
       // This would immediately update the UI with the new post
       // but since I redirect to specific body instead of the page hence need an id
       // this is just there to show that I have understanding over the concept 
-      const optimisticPost = await createPostClient(values);
+      
+      // const optimisticPost = await createPostClient(values);
       
       // Then use the server action to persist the post to the database
       // this uses the REST api because 
