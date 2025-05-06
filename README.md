@@ -105,9 +105,6 @@ pnpm supabase:reset
 pnpm supabase:deploy
 ```
 
-Key migrations include:
-- `20250506000001_add_profiles_table.sql` - Creates the profiles table for user information
-
 ## Authentication
 
 ### Supabase + Apollo Client Integration
